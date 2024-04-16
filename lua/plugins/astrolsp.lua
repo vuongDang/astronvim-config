@@ -46,20 +46,23 @@ return {
 
       -- Make rust-analyzer use its own profile
       -- This allows to run `cargo build` without being block when rust-analyzer runs
-      rust_analyzer = {
-        settings = {
-          ["rust_analyzer"] = {
-            cargo = {
-              extraEnv = { CARGO_PROFILE_RUST_ANALYZER_INHERITS = "dev" },
-              extraArgs = { "--profile", "rust-analyzer" },
-            },
-            -- -- Use `leptosfmt` instead of `rustfmt`
-            -- rustfmt = {
-            --   overrideCommand = { "leptosfmt", "--stdin", "--rustfmt" },
-            -- },
-          },
-        },
-      },
+      -- rust_analyzer = {
+      --   settings = {
+      --     ["rust_analyzer"] = {
+      --       cargo = {
+      --         extraEnv = { CARGO_PROFILE_RUST_ANALYZER_INHERITS = "dev" },
+      --         extraArgs = { "--profile", "rust-analyzer" },
+      --       },
+      -- inlayHints = {
+      --   enable = true,
+      -- },
+      -- -- Use `leptosfmt` instead of `rustfmt`
+      -- rustfmt = {
+      --   overrideCommand = { "leptosfmt", "--stdin", "--rustfmt" },
+      -- },
+      --     },
+      --   },
+      -- },
       -- clangd = { capabilities = { offsetEncoding = "utf-8" } },
     },
     -- customize how language servers are attached
