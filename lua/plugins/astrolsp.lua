@@ -62,7 +62,7 @@ return {
       -- },
       --     },
       --   },
-      -- },
+      },
       -- clangd = { capabilities = { offsetEncoding = "utf-8" } },
     },
     -- customize how language servers are attached
