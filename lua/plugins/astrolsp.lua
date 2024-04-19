@@ -12,7 +12,7 @@ return {
     features = {
       autoformat = true, -- enable or disable auto formatting on start
       codelens = true, -- enable/disable codelens refresh on start
-      inlay_hints = false, -- enable/disable inlay hints on start
+      inlay_hints = true, -- enable/disable inlay hints on start
       semantic_tokens = true, -- enable/disable semantic token highlighting
     },
     -- customize lsp formatting options
@@ -43,32 +43,31 @@ return {
     -- customize language server configuration options passed to `lspconfig`
     ---@diagnostic disable: missing-fields
     config = {
-
       -- Make rust-analyzer use its own profile
       -- This allows to run `cargo build` without being block when rust-analyzer runs
-      -- rust_analyzer = {
-      --   settings = {
-      --     ["rust_analyzer"] = {
-      --       cargo = {
-      --         extraEnv = { CARGO_PROFILE_RUST_ANALYZER_INHERITS = "dev" },
-      --         extraArgs = { "--profile", "rust-analyzer" },
-      --       },
-      -- inlayHints = {
-      --   enable = true,
-      -- },
-      -- -- Use `leptosfmt` instead of `rustfmt`
-      -- rustfmt = {
-      --   overrideCommand = { "leptosfmt", "--stdin", "--rustfmt" },
-      -- },
-      --     },
-      --   },
+      rust_analyzer = {
+        settings = {
+          ["rust_analyzer"] = {
+            cargo = {
+              extraEnv = { CARGO_PROFILE_RUST_ANALYZER_INHERITS = "dev" },
+              extraArgs = { "--profile", "rust-analyzer" },
+            },
+            -- -- Use `leptosfmt` instead of `rustfmt`
+            -- rustfmt = {
+            --   overrideCommand = { "leptosfmt", "--stdin", "--rustfmt" },
+            -- },
+          },
+        },
       },
       -- clangd = { capabilities = { offsetEncoding = "utf-8" } },
     },
     -- customize how language servers are attached
     handlers = {
       -- a function without a key is simply the default handler, functions take two parameters, the server name and the configured options table for that server
-      -- function(server, opts) require("lspconfig")[server].setup(opts) end
+      function(server, opts)
+        -- require("rust-tools").setup { server = opts }
+        -- require("lspconfig").rust_analyzer.setup {}
+      end,
 
       -- the key is the server that is being setup with `lspconfig`
       -- rust_analyzer = false, -- setting a handler to false will disable the set up of that language server
@@ -104,11 +103,11 @@ return {
       n = {
         gl = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" },
         -- a `cond` key can provided as the string of a server capability to be required to attach, or a function with `client` and `bufnr` parameters from the `on_attach` that returns a boolean
-        -- gD = {
-        --   function() vim.lsp.buf.declaration() end,
-        --   desc = "Declaration of current symbol",
-        --   cond = "textDocument/declaration",
-        -- },
+        gD = {
+          function() vim.lsp.buf.declaration() end,
+          desc = "Declaration of current symbol",
+          cond = "textDocument/declaration",
+        },
         -- ["<Leader>uY"] = {
         --   function() require("astrolsp.toggles").buffer_semantic_tokens() end,
         --   desc = "Toggle LSP semantic highlight (buffer)",
@@ -119,6 +118,7 @@ return {
     -- A custom `on_attach` function to be run after the default `on_attach` function
     -- takes two parameters `client` and `bufnr`  (`:h lspconfig-setup`)
     on_attach = function(client, bufnr)
+      require("lsp-inlayhints").on_attach(client, bufnr)
       -- this would disable semanticTokensProvider for all clients
       -- client.server_capabilities.semanticTokensProvider = nil
     end,

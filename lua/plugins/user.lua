@@ -6,6 +6,11 @@ return {
 
   -- == Examples of Adding Plugins ==
 
+  {
+    "lvimuser/lsp-inlayhints.nvim",
+    opts = {},
+  },
+
   "andweeb/presence.nvim",
   {
     "ray-x/lsp_signature.nvim",
