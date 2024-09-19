@@ -47,15 +47,26 @@ return {
       -- This allows to run `cargo build` without being block when rust-analyzer runs
       rust_analyzer = {
         settings = {
-          ["rust_analyzer"] = {
+          ["rust-analyzer"] = {
+            checkOnSave = {
+              allFeatures = true,
+              command = "clippy",
+            },
             cargo = {
               extraEnv = { CARGO_PROFILE_RUST_ANALYZER_INHERITS = "dev" },
               extraArgs = { "--profile", "rust-analyzer" },
+              allFeatures = true,
             },
-            -- -- Use `leptosfmt` instead of `rustfmt`
-            -- rustfmt = {
-            --   overrideCommand = { "leptosfmt", "--stdin", "--rustfmt" },
-            -- },
+            procMacro = {
+              enable = true,
+            },
+            diagnostics = {
+              disabled = { "inactive-code" },
+            },
+            -- Use `leptosfmt` instead of `rustfmt`
+            rustfmt = {
+              overrideCommand = { "leptosfmt", "--stdin", "--rustfmt" },
+            },
           },
         },
       },
