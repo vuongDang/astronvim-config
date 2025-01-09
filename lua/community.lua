@@ -7,6 +7,7 @@ return {
   "AstroNvim/astrocommunity",
   { import = "astrocommunity.pack.lua" },
   { import = "astrocommunity.pack.rust" },
+  { import = "astrocommunity.utility.lua-json5" },
   { import = "astrocommunity.colorscheme.catppuccin" },
   -- import/override with your plugins folder
 }
